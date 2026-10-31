@@ -1,0 +1,307 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===== Windows 95 / Y2K Theme ===== */
+:root {
+  --w95-bg: #008080;
+  --w95-face: #c0c0c0;
+  --w95-face-dark: #808080;
+  --w95-shadow: #404040;
+  --w95-black: #000000;
+  --w95-highlight: #ffffff;
+  --w95-blue: #000080;
+  --w95-blue-bright: #1084d0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'MS Sans Serif', 'Tahoma', 'Segoe UI', Geneva, sans-serif;
+  font-size: 13px;
+  color: #000;
+  -webkit-font-smoothing: none;
+  image-rendering: pixelated;
+  user-select: none;
+  background-color: var(--w95-bg);
+  background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 4px 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+}
+
+@media (max-width: 640px) {
+  body {
+    padding: 0;
+  }
+}
+
+/* ----- Outset (raised) bevel — for windows, buttons at rest ----- */
+.bevel-out {
+  border-top: 2px solid var(--w95-highlight);
+  border-left: 2px solid var(--w95-highlight);
+  border-bottom: 2px solid var(--w95-black);
+  border-right: 2px solid var(--w95-black);
+  box-shadow: inset -1px -1px 0 var(--w95-face-dark);
+}
+
+/* ----- Inset bevel — for text fields, sunken panels ----- */
+.bevel-in {
+  border-top: 2px solid var(--w95-shadow);
+  border-left: 2px solid var(--w95-shadow);
+  border-bottom: 2px solid var(--w95-highlight);
+  border-right: 2px solid var(--w95-highlight);
+  box-shadow: inset 1px 1px 0 var(--w95-black);
+}
+
+/* Thin inset (content areas) */
+.bevel-in-thin {
+  border-top: 1px solid var(--w95-shadow);
+  border-left: 1px solid var(--w95-shadow);
+  border-bottom: 1px solid var(--w95-highlight);
+  border-right: 1px solid var(--w95-highlight);
+  box-shadow: inset 1px 1px 0 var(--w95-black);
+}
+
+/* ----- Win95 button ----- */
+.w95-btn {
+  background: var(--w95-face);
+  border-top: 2px solid var(--w95-highlight);
+  border-left: 2px solid var(--w95-highlight);
+  border-bottom: 2px solid var(--w95-black);
+  border-right: 2px solid var(--w95-black);
+  box-shadow: inset -1px -1px 0 var(--w95-face-dark), inset 1px 1px 0 var(--w95-face);
+  padding: 4px 12px;
+  font-size: 13px;
+  font-family: inherit;
+  color: #000;
+  cursor: pointer;
+  min-width: 75px;
+  text-align: center;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.w95-btn:active,
+.w95-btn.active {
+  border-top: 2px solid var(--w95-black);
+  border-left: 2px solid var(--w95-black);
+  border-bottom: 2px solid var(--w95-highlight);
+  border-right: 2px solid var(--w95-highlight);
+  box-shadow: inset 1px 1px 0 var(--w95-face-dark);
+  padding-top: 5px;
+  padding-bottom: 3px;
+}
+
+.w95-btn:focus-visible {
+  outline: 1px dotted #000;
+  outline-offset: -4px;
+}
+
+/* ----- Title bar button (min/max/close) ----- */
+.title-btn {
+  width: 22px;
+  height: 20px;
+  background: var(--w95-face);
+  border-top: 1px solid var(--w95-highlight);
+  border-left: 1px solid var(--w95-highlight);
+  border-bottom: 1px solid var(--w95-black);
+  border-right: 1px solid var(--w95-black);
+  box-shadow: inset -1px -1px 0 var(--w95-face-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.title-btn:active {
+  border-top: 1px solid var(--w95-black);
+  border-left: 1px solid var(--w95-black);
+  border-bottom: 1px solid var(--w95-highlight);
+  border-right: 1px solid var(--w95-highlight);
+  box-shadow: none;
+}
+
+/* ----- Menu bar item ----- */
+.menu-item {
+  padding: 3px 8px;
+  font-size: 13px;
+  cursor: default;
+  color: #000;
+}
+
+.menu-item:hover,
+.menu-item.active {
+  background: var(--w95-blue);
+  color: var(--w95-highlight);
+}
+
+/* ----- Tab strip ----- */
+.tab {
+  padding: 4px 14px 5px;
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  border-top: 2px solid var(--w95-highlight);
+  border-left: 2px solid var(--w95-highlight);
+  border-bottom: none;
+  border-right: 2px solid var(--w95-black);
+  background: var(--w95-face);
+  color: #000;
+  margin-right: 2px;
+  position: relative;
+  top: 2px;
+  border-radius: 3px 3px 0 0;
+}
+
+.tab.active {
+  background: var(--w95-face);
+  top: 0;
+  padding-top: 6px;
+  padding-bottom: 7px;
+  z-index: 2;
+  font-weight: bold;
+}
+
+.tab:not(.active) {
+  border-top: 2px solid var(--w95-face-dark);
+  border-left: 2px solid var(--w95-face-dark);
+  border-right: 2px solid var(--w95-face-dark);
+  box-shadow: inset -1px -1px 0 var(--w95-face);
+  top: 3px;
+}
+
+/* ----- Scrollbar (Win95 style) ----- */
+.w95-scroll::-webkit-scrollbar {
+  width: 16px;
+  height: 16px;
+}
+.w95-scroll::-webkit-scrollbar-track {
+  background: #dfdfdf;
+  background-image: linear-gradient(45deg, #c0c0c0 25%, transparent 25%, transparent 75%, #c0c0c0 75%);
+  background-size: 2px 2px;
+}
+.w95-scroll::-webkit-scrollbar-thumb {
+  background: var(--w95-face);
+  border-top: 2px solid var(--w95-highlight);
+  border-left: 2px solid var(--w95-highlight);
+  border-bottom: 2px solid var(--w95-black);
+  border-right: 2px solid var(--w95-black);
+}
+.w95-scroll::-webkit-scrollbar-thumb:hover {
+  background: #d4d4d4;
+}
+
+/* ----- Blinking cursor ----- */
+@keyframes blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+.blink {
+  animation: blink 1s steps(1) infinite;
+}
+
+/* ----- Window open animation ----- */
+@keyframes winOpen {
+  from { transform: scale(0.96); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+.win-open {
+  animation: winOpen 140ms ease-out;
+}
+
+/* ----- Status bar segments ----- */
+.status-seg {
+  border-top: 1px solid var(--w95-shadow);
+  border-left: 1px solid var(--w95-shadow);
+  border-bottom: 1px solid var(--w95-highlight);
+  border-right: 1px solid var(--w95-highlight);
+  padding: 2px 8px;
+  font-size: 12px;
+}
+
+/* ----- Sunken content field ----- */
+.sunken-field {
+  border-top: 2px solid var(--w95-shadow);
+  border-left: 2px solid var(--w95-shadow);
+  border-bottom: 2px solid var(--w95-highlight);
+  border-right: 2px solid var(--w95-highlight);
+  box-shadow: inset 1px 1px 0 var(--w95-black);
+  background: #ffffff;
+}
+
+/* ----- Y2K divider (raised line) ----- */
+.y2k-divider {
+  height: 2px;
+  border-top: 1px solid var(--w95-shadow);
+  border-bottom: 1px solid var(--w95-highlight);
+  margin: 4px 0;
+}
+
+/* ----- Compact button (icon-only, small) ----- */
+.w95-btn-sm {
+  background: var(--w95-face);
+  border-top: 1px solid var(--w95-highlight);
+  border-left: 1px solid var(--w95-highlight);
+  border-bottom: 1px solid var(--w95-black);
+  border-right: 1px solid var(--w95-black);
+  box-shadow: inset -1px -1px 0 var(--w95-face-dark);
+  padding: 2px 6px;
+  font-size: 12px;
+  font-family: inherit;
+  color: #000;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.w95-btn-sm:active {
+  border-top: 1px solid var(--w95-black);
+  border-left: 1px solid var(--w95-black);
+  border-bottom: 1px solid var(--w95-highlight);
+  border-right: 1px solid var(--w95-highlight);
+  box-shadow: none;
+}
+
+/* Allow text selection in form fields and displayed text */
+input,
+textarea,
+.selectable {
+  user-select: text;
+}
+
+/* Responsive font scaling for mobile */
+@media (max-width: 640px) {
+  .w95-btn {
+    padding: 5px 10px;
+    font-size: 12px;
+    min-width: 65px;
+  }
+  .tab {
+    padding: 4px 10px 5px;
+    font-size: 12px;
+  }
+  .menu-item {
+    padding: 3px 6px;
+    font-size: 12px;
+  }
+}
