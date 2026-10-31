@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
-import { Minus, Square, X, User, Images, Volume2, VolumeX, Grid3x3, BookOpen, Music } from 'lucide-react';
+import { Minus, Square, X, User, Images, Volume2, VolumeX, Grid3x3, Palette, Music } from 'lucide-react';
 import BioSection from '@/components/BioSection';
 import GallerySection from '@/components/GallerySection';
 import MinesweeperSection from '@/components/MinesweeperSection';
 import MusicSection from '@/components/MusicSection';
-import DiarySection from '@/components/DiarySection';
+import PaintSection from '@/components/PaintSection';
 import { sounds } from '@/lib/sounds';
 import { DEFAULT_THEME } from '@/lib/themes';
 
-type TabId = 'bio' | 'gallery' | 'diary' | 'minigames' | 'music';
+type TabId = 'bio' | 'gallery' | 'paint' | 'minesweeper' | 'music';
 
 type MenuItem = {
   label: string;
@@ -60,7 +60,7 @@ export default function App() {
       items: [
         { label: 'Inicio', action: () => setTab('bio'), check: tab === 'bio' },
         { label: 'Xoromine', action: () => setTab('gallery'), check: tab === 'gallery' },
-        { label: 'Diario', action: () => setTab('diary'), check: tab === 'diary' },
+        { label: 'Paint', action: () => setTab('paint'), check: tab === 'paint' },
         { label: 'Minijuegos', action: () => setTab('minesweeper'), check: tab === 'minesweeper' },
         { label: 'Música', action: () => setTab('music'), check: tab === 'music' },
       ],
@@ -95,8 +95,9 @@ export default function App() {
   const statusText: Record<TabId, string> = {
     bio: 'Listo',
     gallery: 'Viendo al Xoromine...',
-    diary: 'Leyendo diario...',
-    minesweeper: 'Jugando Buscaminas',
+    paint: 'Dibujando en Paint...',
+    minesweeper: 'Jugando Minijuegos',
+    music: 'Escuchando música...',
   };
 
   return (
@@ -207,10 +208,10 @@ export default function App() {
             <Images size={11} className="inline mr-1 -mt-0.5" /> Xoromine
           </div>
           <div
-            className={`tab ${tab === 'diary' ? 'active' : ''}`}
-            onClick={() => { sounds.tab(); setTab('diary'); }}
+            className={`tab ${tab === 'paint' ? 'active' : ''}`}
+            onClick={() => { sounds.tab(); setTab('paint'); }}
           >
-            <BookOpen size={11} className="inline mr-1 -mt-0.5" /> Diario
+            <Palette size={11} className="inline mr-1 -mt-0.5" /> Paint
           </div>
           <div
             className={`tab ${tab === 'minesweeper' ? 'active' : ''}`}
@@ -231,7 +232,7 @@ export default function App() {
           <div className="w95-scroll overflow-y-auto flex-1">
             {tab === 'bio' && <BioSection onOpenGallery={() => setTab('gallery')} />}
             {tab === 'gallery' && <GallerySection onBack={() => setTab('bio')} />}
-            {tab === 'diary' && <DiarySection />}
+            {tab === 'paint' && <PaintSection />}
             {tab === 'minesweeper' && <MinesweeperSection />}
             {tab === 'music' && <MusicSection onBack={() => setTab('bio')} />}
           </div>
