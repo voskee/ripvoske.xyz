@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
-import { Brush, Eraser, Trash2, Save, Send, Loader2, Palette, GalleryHorizontalEnd } from 'lucide-react';
+import { Brush, Eraser, Trash2, Save, Send, Loader2, Palette, GalleryHorizontalEnd, Undo2, Redo2, Download } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { sounds } from '@/lib/sounds';
 
@@ -35,6 +35,10 @@ export default function PaintSection() {
   const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
   const drawingRef = useRef(false);
   const lastPosRef = useRef<{ x: number; y: number } | null>(null);
+  const undoStackRef = useRef<ImageData[]>([]);
+  const redoStackRef = useRef<ImageData[]>([]);
+  const [undoCount, setUndoCount] = useState(0);
+  const [redoCount, setRedoCount] = useState(0);
   const [tool, setTool] = useState<Tool>('brush');
   const [color, setColor] = useState('#000000');
   const [brushSize, setBrushSize] = useState(3);
@@ -61,6 +65,53 @@ export default function PaintSection() {
     ctxRef.current = ctx;
   }, []);
 
+  const pushUndo = () => {
+    const canvas = canvasRef.current;
+    const ctx = ctxRef.current;
+    if (!canvas || !ctx) return;
+    undoStackRef.current.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+    if (undoStackRef.current.length > 50) undoStackRef.current.shift();
+    redoStackRef.current = [];
+    setUndoCount(undoStackRef.current.length);
+    setRedoCount(0);
+  };
+
+  const undo = () => {
+    const canvas = canvasRef.current;
+    const ctx = ctxRef.current;
+    if (!canvas || !ctx) return;
+    if (undoStackRef.current.length === 0) return;
+    sounds.click();
+    redoStackRef.current.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+    const prev = undoStackRef.current.pop()!;
+    ctx.putImageData(prev, 0, 0);
+    setUndoCount(undoStackRef.current.length);
+    setRedoCount(redoStackRef.current.length);
+  };
+
+  const redo = () => {
+    const canvas = canvasRef.current;
+    const ctx = ctxRef.current;
+    if (!canvas || !ctx) return;
+    if (redoStackRef.current.length === 0) return;
+    sounds.click();
+    undoStackRef.current.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+    const next = redoStackRef.current.pop()!;
+    ctx.putImageData(next, 0, 0);
+    setUndoCount(undoStackRef.current.length);
+    setRedoCount(redoStackRef.current.length);
+  };
+
+  const downloadDrawing = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    sounds.click();
+    const link = document.createElement('a');
+    link.download = 'ripvoske-paint.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  };
+
   const startDraw = (e: React.PointerEvent<HTMLCanvasElement>) => {
     e.preventDefault();
     const canvas = canvasRef.current;
@@ -72,6 +123,7 @@ export default function PaintSection() {
 
     const ctx = ctxRef.current;
     if (!ctx) return;
+    pushUndo();
     ctx.beginPath();
     ctx.moveTo(pos.x, pos.y);
   };
@@ -113,6 +165,7 @@ export default function PaintSection() {
     const canvas = canvasRef.current;
     const ctx = ctxRef.current;
     if (!canvas || !ctx) return;
+    pushUndo();
     ctx.fillStyle = '#ffffff';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
   };
@@ -250,6 +303,38 @@ export default function PaintSection() {
                   title="Limpiar"
                 >
                   <Trash2 size={14} />
+                </button>
+              </div>
+
+              {/* Divider */}
+              <div className="w-[2px] h-7" style={{ background: '#808080', borderRight: '1px solid #fff' }} />
+
+              {/* Undo / Redo */}
+              <div className="flex gap-1">
+                <button
+                  className="w95-btn-sm"
+                  onClick={undo}
+                  disabled={undoCount === 0}
+                  title="Deshacer"
+                  style={{ opacity: undoCount === 0 ? 0.4 : 1 }}
+                >
+                  <Undo2 size={14} />
+                </button>
+                <button
+                  className="w95-btn-sm"
+                  onClick={redo}
+                  disabled={redoCount === 0}
+                  title="Rehacer"
+                  style={{ opacity: redoCount === 0 ? 0.4 : 1 }}
+                >
+                  <Redo2 size={14} />
+                </button>
+                <button
+                  className="w95-btn-sm"
+                  onClick={downloadDrawing}
+                  title="Descargar PNG"
+                >
+                  <Download size={14} />
                 </button>
               </div>
 
