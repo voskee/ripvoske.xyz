@@ -24,7 +24,10 @@ type Menu = {
 const theme = DEFAULT_THEME;
 
 export default function App() {
-  const [tab, setTab] = useState<TabId>('bio');
+  const [tab, setTab] = useState<TabId>(() => {
+    const saved = sessionStorage.getItem('ripvoske-tab') as TabId | null;
+    return saved ?? 'bio';
+  });
   const [maximized, setMaximized] = useState(false);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [now, setNow] = useState(new Date());
@@ -38,6 +41,10 @@ export default function App() {
   useEffect(() => {
     sounds.boot();
   }, []);
+
+  useEffect(() => {
+    sessionStorage.setItem('ripvoske-tab', tab);
+  }, [tab]);
 
   const toggleMute = () => {
     const next = !muted;
@@ -229,12 +236,20 @@ export default function App() {
 
         {/* --- Content area --- */}
         <div className="bevel-in-thin mx-1 flex-1 overflow-hidden flex flex-col min-h-0" style={{ background: theme.face }}>
-          <div className="w95-scroll overflow-y-auto flex-1">
-            {tab === 'bio' && <BioSection onOpenGallery={() => setTab('gallery')} />}
-            {tab === 'gallery' && <GallerySection onBack={() => setTab('bio')} />}
-            {tab === 'paint' && <PaintSection />}
-            {tab === 'minesweeper' && <MinesweeperSection />}
-            {tab === 'music' && <MusicSection onBack={() => setTab('bio')} />}
+          <div className="w95-scroll overflow-y-auto flex-1" style={{ display: tab === 'bio' ? 'block' : 'none' }}>
+            <BioSection onOpenGallery={() => setTab('gallery')} />
+          </div>
+          <div className="w95-scroll overflow-y-auto flex-1" style={{ display: tab === 'gallery' ? 'block' : 'none' }}>
+            <GallerySection onBack={() => setTab('bio')} />
+          </div>
+          <div className="w95-scroll overflow-y-auto flex-1" style={{ display: tab === 'paint' ? 'block' : 'none' }}>
+            <PaintSection />
+          </div>
+          <div className="w95-scroll overflow-y-auto flex-1" style={{ display: tab === 'minesweeper' ? 'block' : 'none' }}>
+            <MinesweeperSection />
+          </div>
+          <div className="w95-scroll overflow-y-auto flex-1" style={{ display: tab === 'music' ? 'block' : 'none' }}>
+            <MusicSection onBack={() => setTab('bio')} />
           </div>
         </div>
 
