@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Minus, Square, X, User, Images, Volume2, VolumeX, Grid3x3, Palette, Music } from 'lucide-react';
+import { Minus, Square, X, User, Images, Volume2, VolumeX, Grid3x3, Palette, Music, HelpCircle } from 'lucide-react';
 import BioSection from '@/components/BioSection';
 import GallerySection from '@/components/GallerySection';
 import MinesweeperSection from '@/components/MinesweeperSection';
 import MusicSection from '@/components/MusicSection';
 import PaintSection from '@/components/PaintSection';
+import BlueScreen from '@/components/BlueScreen';
 import { sounds } from '@/lib/sounds';
 import { DEFAULT_THEME } from '@/lib/themes';
 
@@ -32,6 +33,7 @@ export default function App() {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [now, setNow] = useState(new Date());
   const [muted, setMuted] = useState(false);
+  const [bsod, setBsod] = useState(false);
 
   useEffect(() => {
     const t = setInterval(() => setNow(new Date()), 1000);
@@ -131,6 +133,13 @@ export default function App() {
             </button>
             <button className="title-btn" onClick={() => { sounds.click(); setMaximized(false); }} title="Minimizar">
               <Minus size={10} strokeWidth={3} />
+            </button>
+            <button
+              className="title-btn"
+              onClick={() => { sounds.error(); setBsod(true); }}
+              title="?"
+            >
+              <HelpCircle size={12} strokeWidth={2} />
             </button>
             <button
               className="title-btn"
@@ -263,6 +272,7 @@ export default function App() {
           </div>
         </div>
       </div>
+      {bsod && <BlueScreen onClose={() => setBsod(false)} />}
     </div>
   );
 }
