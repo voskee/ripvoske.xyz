@@ -50,8 +50,9 @@ export default function PaintSection() {
   const [drawings, setDrawings] = useState<Drawing[]>([]);
   const [loadingGallery, setLoadingGallery] = useState(false);
 
-  // Init canvas
+  // Init canvas (re-run when returning to draw mode)
   useEffect(() => {
+    if (mode !== 'draw') return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     canvas.width = CANVAS_SIZE;
@@ -63,7 +64,11 @@ export default function PaintSection() {
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
     ctxRef.current = ctx;
-  }, []);
+    undoStackRef.current = [];
+    redoStackRef.current = [];
+    setUndoCount(0);
+    setRedoCount(0);
+  }, [mode]);
 
   const pushUndo = () => {
     const canvas = canvasRef.current;
