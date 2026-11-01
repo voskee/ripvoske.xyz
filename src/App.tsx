@@ -111,7 +111,7 @@ export default function App() {
 
   return (
     <div
-      className="desktop w-full h-full flex items-center justify-center"
+      className="desktop w-full h-full flex items-center justify-center relative"
       style={{ padding: maximized ? '0' : undefined }}
       onMouseDown={() => openMenu && setOpenMenu(null)}
     >

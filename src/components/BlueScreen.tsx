@@ -31,9 +31,12 @@ export default function BlueScreen({ onClose }: { onClose: () => void }) {
 
   useEffect(() => {
     const handler = () => onClose();
-    window.addEventListener('keydown', handler);
-    window.addEventListener('click', handler);
+    const t = setTimeout(() => {
+      window.addEventListener('keydown', handler);
+      window.addEventListener('click', handler);
+    }, 100);
     return () => {
+      clearTimeout(t);
       window.removeEventListener('keydown', handler);
       window.removeEventListener('click', handler);
     };
