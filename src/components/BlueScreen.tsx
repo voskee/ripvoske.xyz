@@ -44,7 +44,7 @@ export default function BlueScreen({ onClose }: { onClose: () => void }) {
 
   return (
     <div
-      className="absolute inset-0 z-[9999] flex items-start justify-start p-[6%] cursor-pointer"
+      className="fixed inset-0 z-[9999] flex items-start justify-start p-[6%] cursor-pointer"
       style={{ background: '#000080', color: '#fff', fontFamily: 'monospace' }}
     >
       <div className="text-[13px] sm:text-[15px] leading-[1.6] max-w-full">
