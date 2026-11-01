@@ -16,7 +16,7 @@ const LINES = [
   'Cargando Xoromine................... [OK]',
   'Cargando Paint..................... [OK]',
   'Cargando minijuegos................. [OK]',
-  'Cargando música.................... [FAIL]',
+  'Cargando 0xERR_NUL7.................... [FAIL]',
   '',
   'Presione cualquier tecla para continuar _',
 ];
